@@ -1,0 +1,29 @@
+- id: CAF-IAM-004
+  description: "Managed identities used for service-to-service authentication"
+  severity: High
+  caf_ref: "Identity"
+  doc_url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/identity-access"
+  recommendation: "Use system-assigned or user-assigned managed identity instead of service principal keys."
+  resource_types:
+    - azurerm_linux_web_app
+    - azurerm_windows_web_app
+    - azurerm_app_service
+    - azurerm_function_app
+    - azurerm_linux_function_app
+    - azurerm_kubernetes_cluster
+  check:
+    attribute: "identity"
+    operator: "exists"
+    absent_is_violation: true
+
+- id: CAF-IAM-001
+  description: "RBAC assignments use least-privilege — no Owner at subscription scope"
+  severity: High
+  caf_ref: "RBAC"
+  doc_url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/identity-access"
+  recommendation: "Avoid Owner or Contributor at subscription scope. Scope RBAC to resource group or resource level."
+  resource_types:
+    - azurerm_role_assignment
+  check:
+    type: "custom"
+    handler: "rbac_least_privilege"

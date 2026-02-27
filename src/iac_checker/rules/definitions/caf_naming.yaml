@@ -1,0 +1,33 @@
+- id: CAF-NAME-001
+  description: "Resource names follow CAF naming convention"
+  severity: High
+  caf_ref: "Naming"
+  doc_url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming"
+  recommendation: "Follow the pattern: <abbreviation>-<workload>-<env>-<region>-<instance>. See CAF resource abbreviations list."
+  resource_types: []
+  check:
+    type: "custom"
+    handler: "naming_convention"
+
+- id: CAF-NAME-004
+  description: "Names within Azure character limits and allowed character sets"
+  severity: High
+  caf_ref: "Naming"
+  doc_url: "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules"
+  recommendation: "Check Azure naming rules per resource type for allowed characters and length limits."
+  resource_types: []
+  check:
+    type: "custom"
+    handler: "naming_restrictions"
+
+- id: CAF-NAME-010
+  description: "Storage account names follow restricted format (lowercase, no hyphens, 3-24 chars)"
+  severity: Medium
+  caf_ref: "Naming"
+  doc_url: "https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-name-rules"
+  recommendation: "Storage account names must be 3-24 chars, lowercase letters and numbers only (no hyphens)."
+  resource_types:
+    - azurerm_storage_account
+  check:
+    type: "custom"
+    handler: "storage_naming"

@@ -1,0 +1,97 @@
+# === Example Configuration for Azure IaC Compliance Checker ===
+
+# === Rule Overrides ===
+rules:
+  WAF-SEC-007:
+    enabled: true
+    severity: Medium
+  CAF-NAME-001:
+    enabled: true
+    pattern: "^(rg|vm|st|kv|aks)-[a-z0-9]+-[a-z]+-[a-z0-9]+$"
+  WAF-SVC-002:
+    enabled: false                      # disable AKS private cluster check for dev
+
+# === WAF Pillar Settings ===
+waf:
+  pillars:
+    - reliability
+    - security
+    - cost_optimization
+    - operational_excellence
+    - performance_efficiency
+  service_guides:
+    enabled: true
+    services:
+      - aks
+      - app_service
+      - sql_database
+      - storage
+      - key_vault
+      - virtual_machine
+
+# === CAF Tagging — 5 Foundational Categories ===
+tags:
+  functional:
+    mandatory:
+      - app
+      - env
+      - tier
+    allowed_environments:
+      - dev
+      - staging
+      - test
+      - qa
+      - prod
+  classification:
+    mandatory:
+      - confidentiality
+      - criticality
+  accounting:
+    mandatory:
+      - costCenter
+      - department
+  purpose:
+    optional:
+      - businessProcess
+      - businessImpact
+  ownership:
+    mandatory:
+      - owner
+      - businessUnit
+  iac:
+    mandatory:
+      - createdBy
+
+# === CAF Naming Convention ===
+naming:
+  convention: "{abbreviation}-{workload}-{env}-{region}-{instance}"
+  abbreviations_source: "microsoft"
+  delimiter: "-"
+  enforce_lowercase: true
+  instance_format: "001"
+
+# === CAF Governance Policy Categories ===
+governance:
+  enforce_categories:
+    - RC
+    - SC
+    - OP
+    - CM
+    - DG
+    - RM
+    - AI
+
+# === AVM Compatibility ===
+avm:
+  check_avm_alternatives: true
+  preferred_source: "Azure/avm-"
+
+# === Scan Settings ===
+scan:
+  exclude_paths:
+    - ".terraform/"
+    - "examples/"
+    - "tests/"
+  severity_threshold: "High"
+  environment_detection: "tag"
+  production_strict_mode: true

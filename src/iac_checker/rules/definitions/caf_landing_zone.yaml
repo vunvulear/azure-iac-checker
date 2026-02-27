@@ -1,0 +1,13 @@
+- id: CAF-LZ-004
+  description: "Hub-spoke or Virtual WAN network topology used"
+  severity: Medium
+  caf_ref: "Networking"
+  doc_url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/design-area/network-topology-and-connectivity"
+  recommendation: "Use hub-spoke or Virtual WAN topology. Ensure VNet peering or vWAN connections are configured."
+  resource_types:
+    - azurerm_virtual_network_peering
+    - azurerm_virtual_hub
+  check:
+    attribute: "__exists__"
+    operator: "exists"
+    absent_is_violation: false

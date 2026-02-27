@@ -1,0 +1,47 @@
+- id: CAF-TAG-001
+  description: "Functional tags present — app, env, tier"
+  severity: High
+  caf_ref: "Functional"
+  doc_url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-tagging"
+  recommendation: "Add tags: app (application name), env (environment), tier (web/app/data)."
+  resource_types: []
+  check:
+    type: "custom"
+    handler: "mandatory_tags"
+    tags: ["app", "env"]
+
+- id: CAF-TAG-003
+  description: "Accounting tags present — costCenter, department"
+  severity: High
+  caf_ref: "Accounting"
+  doc_url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-tagging"
+  recommendation: "Add tags: costCenter, department for financial tracking and chargeback."
+  resource_types: []
+  check:
+    type: "custom"
+    handler: "mandatory_tags"
+    tags: ["costCenter"]
+
+- id: CAF-TAG-005
+  description: "Ownership tags present — owner, businessUnit"
+  severity: High
+  caf_ref: "Ownership"
+  doc_url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-tagging"
+  recommendation: "Add tags: owner, businessUnit for accountability and incident response."
+  resource_types: []
+  check:
+    type: "custom"
+    handler: "mandatory_tags"
+    tags: ["owner"]
+
+- id: CAF-TAG-012
+  description: "All taggable resources have minimum mandatory tags"
+  severity: High
+  caf_ref: "Mandatory"
+  doc_url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-tagging"
+  recommendation: "Ensure all taggable resources have at minimum: env, owner, costCenter, app."
+  resource_types: []
+  check:
+    type: "custom"
+    handler: "mandatory_tags"
+    tags: ["env", "owner", "costCenter", "app"]

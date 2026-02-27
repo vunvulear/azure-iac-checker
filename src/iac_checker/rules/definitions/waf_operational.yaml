@@ -1,0 +1,21 @@
+- id: WAF-OPS-003
+  description: "Terraform version constraint defined (required_version)"
+  severity: Medium
+  waf_ref: "OE:04"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/tools-processes"
+  recommendation: "Add required_version in the terraform {} block to pin the Terraform version."
+  resource_types: []
+  check:
+    type: "custom"
+    handler: "terraform_version"
+
+- id: WAF-OPS-004
+  description: "Provider version constraints defined"
+  severity: Medium
+  waf_ref: "OE:04"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/operational-excellence/tools-processes"
+  recommendation: "Pin provider versions in required_providers with version constraints (e.g., ~> 3.0)."
+  resource_types: []
+  check:
+    type: "custom"
+    handler: "provider_version"

@@ -1,0 +1,157 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {},
+  "resources": [
+    {
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2022-09-01",
+      "name": "my-resource-group",
+      "location": "eastus2",
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2023-01-01",
+      "name": "mybadstorage",
+      "location": "eastus2",
+      "sku": {
+        "name": "Premium_LRS"
+      },
+      "kind": "StorageV2",
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Sql/servers",
+      "apiVersion": "2023-05-01",
+      "name": "sql-myapp-prod-eastus2-001",
+      "location": "eastus2",
+      "tags": {
+        "env": "production"
+      },
+      "properties": {
+        "administratorLogin": "sqladmin",
+        "administratorLoginPassword": "P@ssw0rd123!"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2023-02-01",
+      "name": "kv-myapp-prod-eus2-002",
+      "location": "eastus2",
+      "tags": {
+        "app": "myapp",
+        "env": "prod",
+        "costCenter": "CC-1234",
+        "owner": "team-platform"
+      },
+      "properties": {
+        "tenantId": "00000000-0000-0000-0000-000000000000",
+        "sku": {
+          "family": "A",
+          "name": "standard"
+        },
+        "enableRbacAuthorization": false,
+        "enablePurgeProtection": false
+      }
+    },
+    {
+      "type": "Microsoft.ContainerService/managedClusters",
+      "apiVersion": "2023-08-01",
+      "name": "aks-myapp-prod-eastus2-001",
+      "location": "eastus2",
+      "tags": {
+        "app": "myapp",
+        "env": "prod",
+        "costCenter": "CC-1234",
+        "owner": "team-platform"
+      },
+      "properties": {
+        "dnsPrefix": "myaks",
+        "agentPoolProfiles": [
+          {
+            "name": "default",
+            "count": 1,
+            "vmSize": "Standard_D2_v2",
+            "mode": "System"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2023-03-01",
+      "name": "vm-myapp-prod-eastus2-001",
+      "location": "eastus2",
+      "tags": {
+        "app": "myapp",
+        "env": "prod",
+        "costCenter": "CC-1234",
+        "owner": "team-platform"
+      },
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_D2s_v3"
+        },
+        "osProfile": {
+          "computerName": "vm-myapp",
+          "adminUsername": "azureuser",
+          "linuxConfiguration": {
+            "disablePasswordAuthentication": true,
+            "ssh": {
+              "publicKeys": [
+                {
+                  "path": "/home/azureuser/.ssh/authorized_keys",
+                  "keyData": "ssh-rsa AAAA..."
+                }
+              ]
+            }
+          }
+        },
+        "storageProfile": {
+          "osDisk": {
+            "createOption": "FromImage",
+            "managedDisk": {
+              "storageAccountType": "Premium_LRS"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkSecurityGroups/securityRules",
+      "apiVersion": "2023-05-01",
+      "name": "nsg-myapp-prod/allow-all-inbound",
+      "properties": {
+        "priority": 100,
+        "direction": "Inbound",
+        "access": "Allow",
+        "protocol": "*",
+        "sourcePortRange": "*",
+        "destinationPortRange": "*",
+        "sourceAddressPrefix": "*",
+        "destinationAddressPrefix": "*"
+      }
+    },
+    {
+      "type": "Microsoft.Sql/servers",
+      "apiVersion": "2023-05-01",
+      "name": "sql-legacy-prod-eastus2-001",
+      "location": "eastus2",
+      "tags": {
+        "app": "legacy",
+        "env": "prod",
+        "costCenter": "CC-0000",
+        "owner": "team-legacy"
+      },
+      "metadata": {
+        "waf-ignore": "WAF-SEC-019"
+      },
+      "properties": {
+        "administratorLogin": "legacyadmin",
+        "administratorLoginPassword": "LegacyP@ss!"
+      }
+    }
+  ],
+  "outputs": {}
+}

@@ -1,0 +1,23 @@
+- id: CAF-NET-003
+  description: "Each subnet has an associated NSG"
+  severity: High
+  caf_ref: "Segmentation"
+  doc_url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/plan-for-landing-zone-network-segmentation"
+  recommendation: "Associate an NSG with every subnet. Use azurerm_subnet_network_security_group_association."
+  resource_types:
+    - azurerm_subnet
+  check:
+    type: "custom"
+    handler: "subnet_nsg_association"
+
+- id: CAF-NET-007
+  description: "No direct internet ingress without WAF protection"
+  severity: High
+  caf_ref: "Ingress"
+  doc_url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/plan-for-inbound-and-outbound-internet-connectivity"
+  recommendation: "Use Application Gateway WAF v2 or Azure Front Door WAF for all inbound internet traffic."
+  resource_types:
+    - azurerm_public_ip
+  check:
+    type: "custom"
+    handler: "public_ip_waf_check"

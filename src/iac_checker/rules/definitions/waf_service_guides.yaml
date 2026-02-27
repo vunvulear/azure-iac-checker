@@ -1,0 +1,54 @@
+- id: WAF-SVC-002
+  description: "AKS uses private cluster endpoint for production"
+  severity: High
+  waf_ref: "SE:06"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/service-guides/azure-kubernetes-service"
+  recommendation: "Set private_cluster_enabled = true for production AKS clusters."
+  resource_types:
+    - azurerm_kubernetes_cluster
+  check:
+    attribute: "private_cluster_enabled"
+    operator: "bool_true"
+    absent_is_violation: true
+
+- id: WAF-SVC-005
+  description: "App Service configured with HTTPS-only, TLS 1.2, and managed identity"
+  severity: High
+  waf_ref: "SE:07"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/service-guides/app-service-web-apps"
+  recommendation: "Set https_only = true, min_tls_version = '1.2', and configure an identity block."
+  resource_types:
+    - azurerm_linux_web_app
+    - azurerm_windows_web_app
+    - azurerm_app_service
+  check:
+    attribute: "https_only"
+    operator: "bool_true"
+    absent_is_violation: true
+
+- id: WAF-SVC-010
+  description: "Storage account firewall enabled — default_action = Deny"
+  severity: High
+  waf_ref: "SE:06"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/service-guides/storage-accounts"
+  recommendation: "Configure network_rules with default_action = 'Deny' and whitelist necessary IPs/subnets."
+  resource_types:
+    - azurerm_storage_account
+  check:
+    attribute: "network_rules.default_action"
+    operator: "equals"
+    value: "Deny"
+    absent_is_violation: true
+
+- id: WAF-SVC-007
+  description: "SQL Database Transparent Data Encryption (TDE) and auditing enabled"
+  severity: High
+  waf_ref: "SE:07"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/service-guides/azure-sql-database-well-architected-framework"
+  recommendation: "Ensure TDE is enabled (default on) and configure azurerm_mssql_server_extended_auditing_policy."
+  resource_types:
+    - azurerm_mssql_database
+  check:
+    attribute: "transparent_data_encryption_enabled"
+    operator: "bool_true"
+    absent_is_violation: false

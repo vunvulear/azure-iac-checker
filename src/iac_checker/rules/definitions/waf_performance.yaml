@@ -1,0 +1,25 @@
+- id: WAF-PERF-009
+  description: "Accelerated Networking enabled on supported VM sizes"
+  severity: Low
+  waf_ref: "PE:07"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/performance-efficiency/optimize-code-infrastructure"
+  recommendation: "Set enable_accelerated_networking = true on network interfaces for supported VM sizes."
+  resource_types:
+    - azurerm_network_interface
+  check:
+    attribute: "enable_accelerated_networking"
+    operator: "bool_true"
+    absent_is_violation: true
+
+- id: WAF-PERF-005
+  description: "Auto-scale rules configured with appropriate thresholds"
+  severity: High
+  waf_ref: "PE:05"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/performance-efficiency/scale-partition"
+  recommendation: "Configure auto-scale with min/max/default instance counts and appropriate metric thresholds."
+  resource_types:
+    - azurerm_monitor_autoscale_setting
+  check:
+    attribute: "profile"
+    operator: "exists"
+    absent_is_violation: true

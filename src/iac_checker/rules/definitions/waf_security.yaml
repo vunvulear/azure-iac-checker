@@ -1,0 +1,63 @@
+- id: WAF-SEC-012
+  description: "Encryption in transit enforced — min_tls_version = TLS1_2"
+  severity: High
+  waf_ref: "SE:07"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/security/encryption"
+  recommendation: "Set min_tls_version = 'TLS1_2' on all applicable resources."
+  resource_types:
+    - azurerm_storage_account
+    - azurerm_mssql_server
+    - azurerm_app_service
+    - azurerm_linux_web_app
+    - azurerm_windows_web_app
+    - azurerm_function_app
+    - azurerm_linux_function_app
+    - azurerm_redis_cache
+  check:
+    attribute: "min_tls_version"
+    operator: "equals"
+    value: "TLS1_2"
+    absent_is_violation: true
+
+- id: WAF-SEC-013
+  description: "HTTPS enforced on all web-facing resources"
+  severity: High
+  waf_ref: "SE:07"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/security/encryption"
+  recommendation: "Set https_only = true on App Service, Function App, and other web resources."
+  resource_types:
+    - azurerm_app_service
+    - azurerm_linux_web_app
+    - azurerm_windows_web_app
+    - azurerm_function_app
+    - azurerm_linux_function_app
+  check:
+    attribute: "https_only"
+    operator: "bool_true"
+    absent_is_violation: true
+
+- id: WAF-SEC-016
+  description: "Storage accounts disallow public blob access"
+  severity: High
+  waf_ref: "SE:08"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/security/networking"
+  recommendation: "Set allow_nested_items_to_be_public = false on storage accounts."
+  resource_types:
+    - azurerm_storage_account
+  check:
+    attribute: "allow_nested_items_to_be_public"
+    operator: "bool_false"
+    absent_is_violation: true
+
+- id: WAF-SEC-017
+  description: "Storage accounts enforce HTTPS-only transfer"
+  severity: High
+  waf_ref: "SE:08"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/security/networking"
+  recommendation: "Set enable_https_traffic_only = true on storage accounts."
+  resource_types:
+    - azurerm_storage_account
+  check:
+    attribute: "enable_https_traffic_only"
+    operator: "bool_true"
+    absent_is_violation: true

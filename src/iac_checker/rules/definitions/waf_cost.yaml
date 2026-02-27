@@ -1,0 +1,25 @@
+- id: WAF-COST-001
+  description: "Tags for cost allocation present — costCenter, environment, owner"
+  severity: Medium
+  waf_ref: "CO:01"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/cost-optimization/collect-review-cost-data"
+  recommendation: "Add costCenter, environment, and owner tags to all resources for financial tracking."
+  resource_types: []
+  check:
+    attribute: "tags.costCenter"
+    operator: "exists"
+    absent_is_violation: true
+
+- id: WAF-COST-007
+  description: "Oversized SKUs detected for dev/test environments"
+  severity: Medium
+  waf_ref: "CO:07"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/cost-optimization/optimize-component-costs"
+  recommendation: "Use Standard SKUs for dev/test instead of Premium. Review SKU sizing against actual utilization."
+  resource_types:
+    - azurerm_storage_account
+  check:
+    attribute: "account_tier"
+    operator: "not_equals"
+    value: "Premium"
+    absent_is_violation: false

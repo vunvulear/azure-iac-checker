@@ -1,0 +1,47 @@
+- id: WAF-REL-003
+  description: "Managed disks used instead of unmanaged disks"
+  severity: Medium
+  waf_ref: "RE:05"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/reliability/redundancy"
+  recommendation: "Use azurerm_managed_disk or set managed_disk_type on VM resources. Avoid storage_uri for OS disks."
+  resource_types:
+    - azurerm_virtual_machine
+  check:
+    attribute: "storage_os_disk.managed_disk_type"
+    operator: "exists"
+    absent_is_violation: true
+
+- id: WAF-REL-009
+  description: "Soft-delete enabled on Key Vault"
+  severity: High
+  waf_ref: "RE:07"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/reliability/self-preservation"
+  recommendation: "Set soft_delete_retention_days (default 90) and purge_protection_enabled = true on Key Vault."
+  resource_types:
+    - azurerm_key_vault
+  check:
+    attribute: "purge_protection_enabled"
+    operator: "bool_true"
+    absent_is_violation: true
+
+- id: WAF-REL-012
+  description: "SLA-appropriate SKUs — no Basic/Free tier for production"
+  severity: High
+  waf_ref: "RE:04"
+  doc_url: "https://learn.microsoft.com/en-us/azure/well-architected/reliability/metrics"
+  recommendation: "Use Standard or Premium SKUs for production workloads. Basic and Free tiers have limited SLAs."
+  resource_types:
+    - azurerm_app_service_plan
+    - azurerm_service_plan
+  check:
+    attribute: "sku_name"
+    operator: "not_in"
+    value:
+      - "F1"
+      - "D1"
+      - "B1"
+      - "B2"
+      - "B3"
+      - "Free"
+      - "Basic"
+    absent_is_violation: false

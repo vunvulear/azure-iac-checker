@@ -1,0 +1,25 @@
+- id: CAF-GOV-012
+  description: "Data residency — resource deployment restricted to approved regions"
+  severity: High
+  caf_ref: "DG02"
+  doc_url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/govern/document-cloud-governance-policies"
+  recommendation: "Use Azure Policy to restrict resource deployment to approved regions. Define allowed_locations."
+  resource_types:
+    - azurerm_policy_assignment
+  check:
+    type: "custom"
+    handler: "data_residency_policy"
+
+- id: CAF-GOV-013
+  description: "Resource locks on critical production resources"
+  severity: Medium
+  caf_ref: "RM01"
+  doc_url: "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/govern/document-cloud-governance-policies"
+  recommendation: "Add azurerm_management_lock (CanNotDelete) on production databases, key vaults, and hub networking."
+  resource_types:
+    - azurerm_management_lock
+  check:
+    attribute: "lock_level"
+    operator: "equals"
+    value: "CanNotDelete"
+    absent_is_violation: false
